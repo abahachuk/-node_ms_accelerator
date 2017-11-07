@@ -1,8 +1,6 @@
-Node MS Accelerator
-=========
+# Node MS Accelerator
 
-Getting started
----------------
+## Getting started
 
 Download [Docker](https://www.docker.com/products/overview). If you are on Mac or Windows, [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
 
@@ -23,16 +21,14 @@ docker stack deploy --compose-file docker-stack.yml node_mc_accelerator
 
 Alternately, if you want to create multi-service and multi-node application, follow instruction [Docker Stack](https://docs.docker.com/get-started/part5/)
 
-Architecture
------
+## Architecture
 
 TODO: crete diagram
 
 
-Visualization / Monitoring
------
+## Visualization / Monitoring
 
-# Docker Swarm Visualizer
+### Docker Swarm Visualizer
 
 Demo container that displays Docker services running on a Docker Swarm in a diagram.
 
@@ -40,13 +36,13 @@ Each node in the swarm will show all tasks running on it. When a service goes do
 Occasionally the Remote API will return incomplete data, for instance the node can be missing a name.
 The Visualizer will be running at [http://<ip>:8080](http://<ip>:8080).
 
-# Logs
+### Logs
 
 By default services use a Bunyan stream for saving logs into Elasticsearch.
 
 Kibana Visualizer will be running at [http://<ip>:5601](http://<ip>:5601).
 
-# Message Broker
+### Message Broker
 
 RabbitMQ is used as a default message broker or queue manager.
 Applications may connect to the queue and transfer a message onto it.
