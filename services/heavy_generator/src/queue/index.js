@@ -1,6 +1,7 @@
 const amqp = require('amqplib');
 const { rabbitMQSettings: { url } } = require('../config');
 const resolveChannels = require('./channels');
+const logger = require('../utils/logger');
 
 const RECONNECT_TIMEOUT = 1000;
 
@@ -10,7 +11,7 @@ async function connect() {
     try {
         conn = await amqp.connect(url);
     } catch (e) {
-        console.error(e);
+        logger.error(e);
 
         setTimeout(connect, RECONNECT_TIMEOUT);
     }

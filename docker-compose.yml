@@ -10,6 +10,17 @@ services:
       RABBITMQ_DEFAULT_USER: guest
     networks:
       - backend
+  elasticsearch:
+    image: elasticsearch
+    networks:
+      - backend
+  kibana:
+    image: kibana
+    ports:
+      - 5601:5601
+    networks:
+      - frontend
+      - backend
   heavy_generator_service:
     build:
       context: ./services/heavy_generator
@@ -17,6 +28,7 @@ services:
     volumes:
       - ./services/heavy_generator:/app
     environment:
+      ELASTICSEARCH_URL: "elasticsearch:9200"
       RABBITMQ_URL: "amqp://rabbitmq:5672"
     entrypoint: ["npm", "start"]
     depends_on:
@@ -32,6 +44,7 @@ services:
       volumes:
         - ./services/generator:/app
       environment:
+        ELASTICSEARCH_URL: "elasticsearch:9200"
         RABBITMQ_URL: "amqp://rabbitmq:5672"
       entrypoint: ["npm", "start"]
       depends_on:

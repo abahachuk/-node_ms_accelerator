@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 const logger = bunyan.createLogger({
-    name: "Generator API application logger",
+    name: "Heavy_generator application logger",
     streams,
     serializers: bunyan.stdSerializers
 });

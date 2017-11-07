@@ -1,9 +1,13 @@
+const logger = require('./logger');
+
 module.exports = (postfix) => {
     return new Promise((resolve) => {
-        const delay = ~~(Math.random() * 1000000 % 1000);
+        const number = ~~(Math.random() * 1000000 % 1000);
+
+        logger.info(`Generated number: ${number}`);
 
         setTimeout(() => {
-            resolve(delay + postfix);
-        }, delay);
+            resolve(number + postfix);
+        }, number);
     });
 }

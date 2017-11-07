@@ -21,6 +21,8 @@
     "pre-commit": "^1.2.2"
   },
   "dependencies": {
-    "amqplib": "^0.5.1"
+    "amqplib": "^0.5.1",
+    "bunyan": "^1.8.12",
+    "bunyan-elasticsearch": "^1.0.1"
   }
 }
