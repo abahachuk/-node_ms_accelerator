@@ -1,0 +1,26 @@
+{
+  "name": "heavy-generator-service",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint -c .eslintrc ./src",
+    "start": "nodemon src/index.js -L",
+    "debug": "nodemon --inspect=56745 src/index.js"
+  },
+  "author": "Aliaksei Bahachuk",
+  "license": "ISC",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "devDependencies": {
+    "eslint": "^4.4.1",
+    "eslint-plugin-node": "^5.1.1",
+    "pre-commit": "^1.2.2"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.1"
+  }
+}

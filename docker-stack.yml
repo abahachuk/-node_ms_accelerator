@@ -1,0 +1,78 @@
+version: "3"
+services:
+  registry:
+    restart: always
+    image: registry:2
+    ports:
+      - 5000:5000
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: guest
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+  heavy_generator_service:
+    image: registry:5000/heavy_generator_service
+    build:
+      context: ./services/heavy_generator
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/heavy_generator:/app
+    environment:
+      RABBITMQ_URL: "amqp://rabbitmq:5672"
+    entrypoint: ["npm", "start"]
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - rabbitmq
+    networks:
+      - backend
+  generator_service:
+      image: registry:5000/generator_service
+      ports:
+        - "3001:3001"
+      build:
+        context: ./services/generator
+        dockerfile: Dockerfile
+      volumes:
+        - ./services/generator:/app
+      environment:
+        RABBITMQ_URL: "amqp://rabbitmq:5672"
+      entrypoint: ["npm", "start"]
+      deploy:
+        replicas: 2
+        restart_policy:
+          condition: on-failure
+      depends_on:
+        - rabbitmq
+      networks:
+        - frontend
+        - backend
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+networks:
+  backend:
+    driver: overlay
+  frontend:
+    driver: overlay
