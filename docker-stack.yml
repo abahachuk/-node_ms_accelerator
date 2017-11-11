@@ -5,6 +5,19 @@ services:
     image: registry:2
     ports:
       - 5000:5000
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx:/etc/nginx
+    ports:
+      - "80:80"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - frontend
+    depends_on:
+      - generator_service
   elasticsearch:
     image: elasticsearch
     networks:
@@ -50,12 +63,11 @@ services:
         condition: on-failure
     depends_on:
       - rabbitmq
+      - elasticsearch
     networks:
       - backend
   generator_service:
       image: registry:5000/generator_service
-      ports:
-        - "3001:3001"
       build:
         context: ./services/generator
         dockerfile: Dockerfile
@@ -71,6 +83,7 @@ services:
           condition: on-failure
       depends_on:
         - rabbitmq
+        - elasticsearch
       networks:
         - frontend
         - backend

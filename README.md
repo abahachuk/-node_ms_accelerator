@@ -8,7 +8,7 @@ Run in this directory:
 ```
 docker-compose up
 ```
-The app will be running at [http://localhost:3001](http://localhost:3001).
+The app will be running at [http://localhost:80](http://localhost:80).
 
 Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
 ```
